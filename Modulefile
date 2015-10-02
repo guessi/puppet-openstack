@@ -16,3 +16,8 @@ dependency 'puppetlabs/swift', '>= 3.0.0 <4.0.0'
 dependency 'puppetlabs/neutron', '>= 3.3.0 <4.0.0'
 dependency 'puppetlabs/ceilometer', '>= 3.1.1 <4.0.0'
 dependency 'puppetlabs/heat', '>= 3.1.0 <4.0.0'
+
+dependency 'puppetlabs/ntp',         '>=3.3.0 <4.0.0'
+dependency 'puppetlabs/firewall',    '>=1.7.1 <2.0.0'
+dependency 'puppetlabs/vswitch',     '>=0.3.0 <1.0.0'
+dependency 'puppetlabs/mongodb',     '>=0.11.0 <1.0.0'
