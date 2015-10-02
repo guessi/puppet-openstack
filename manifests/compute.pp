@@ -112,12 +112,6 @@ class openstack::compute (
     'DEFAULT/novnc_enabled': value => $vnc_enabled;
   }
 
-  if $ovs_local_ip {
-    $ovs_local_ip_real = $ovs_local_ip
-  } else {
-    $ovs_local_ip_real = $internal_address
-  }
-
   if $vncserver_listen {
     $vncserver_listen_real = $vncserver_listen
   } else {
@@ -216,6 +210,9 @@ class openstack::compute (
       install_service   => $enable_network_service,
     }
   } else {
+    if ! $ovs_local_ip {
+      fail('compute:ovs_local_ip must be set when neutron is configured')
+    }
 
     if ! $neutron_user_password {
       fail('neutron_user_password must be set when neutron is configured')
@@ -229,7 +226,7 @@ class openstack::compute (
       # Database
       db_host              => $db_host,
       # Networking
-      ovs_local_ip         => $ovs_local_ip_real,
+      ovs_local_ip         => $ovs_local_ip,
       # Rabbit
       rabbit_host          => $rabbit_host,
       rabbit_hosts         => $rabbit_hosts,
