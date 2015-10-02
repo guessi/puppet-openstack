@@ -1,6 +1,6 @@
 # Ubuntu Cloud Archive repo (supports either Folsom or Grizzly)
 class openstack::repo::uca(
-  $release = 'grizzly',
+  $release = 'havana',
   $repo    = 'updates'
 ) {
   if ($::operatingsystem == 'Ubuntu' and
