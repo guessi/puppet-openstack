@@ -74,6 +74,8 @@ class openstack::compute (
   $nova_admin_user               = 'nova',
   $purge_nova_config             = false,
   $libvirt_vif_driver            = 'nova.virt.libvirt.vif.LibvirtGenericVIFDriver',
+  $api_auth_protocal             = 'http',
+  $controller_host               = '127.0.0.1',
   # Keystone Client
   $ensure_keystoneclient         = 'present',
   # Rabbit
@@ -315,6 +317,13 @@ class openstack::compute (
 
   class { '::keystone::client':
     ensure                => $ensure_keystoneclient,
+  }
+
+  Package<| title == 'nova-common' |> -> Nova_paste_api_ini<| |>
+
+  nova_paste_api_ini {
+    'filter:authtoken/auth_host':         value => $controller_host;
+    'filter:authtoken/auth_protocol':     value => $api_auth_protocal;
   }
 
   if $migration_support {
