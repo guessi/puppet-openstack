@@ -3,7 +3,7 @@ version '3.0.0'
 source  'https://github.com/stackforge/puppet-openstack'
 author  'Puppet Labs'
 license 'Apache License 2.0'
-summary 'Puppet Labs Openstack Module targeted for Grizzly'
+summary 'Puppet Labs Openstack Module targeted for Havana'
 description 'Puppet module that pulls together all the individual components of Openstack, resulting is a complete and functional stack.'
 project_page 'https://github.com/stackforge/puppet-openstack'
 
