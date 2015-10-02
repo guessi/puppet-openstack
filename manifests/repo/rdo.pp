@@ -7,9 +7,9 @@ class openstack::repo::rdo(
   $release_cap = capitalize($release)
 
   if $::osfamily == 'RedHat' {
-    case $operatingsystem {
-      centos, redhat, scientific, slc: { $dist = 'epel' }
-      fedora: { $dist = 'fedora' }
+    case $::operatingsystem {
+      'centos', 'redhat', 'scientific', 'slc': { $dist = 'epel' }
+      'fedora', default: { $dist = 'fedora' }
     }
     # $lsbmajdistrelease is only available with redhat-lsb installed
     $osver = regsubst($::operatingsystemrelease, '(\d+)\..*', '\1')
