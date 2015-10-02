@@ -273,7 +273,7 @@ class openstack::all (
     if ($enabled) {
       Class['glance::db::mysql'] -> Class['glance::registry']
     }
-    class { 'openstack::db::mysql':
+    class { '::openstack::db::mysql':
       mysql_root_password    => $mysql_root_password,
       mysql_bind_address     => $mysql_bind_address,
       mysql_account_security => $mysql_account_security,
@@ -303,7 +303,7 @@ class openstack::all (
   }
 
   ####### KEYSTONE ###########
-  class { 'openstack::keystone':
+  class { '::openstack::keystone':
     verbose               => $verbose,
     db_type               => $db_type,
     db_host               => $db_host,
@@ -331,7 +331,7 @@ class openstack::all (
 
 
   ######## BEGIN GLANCE ##########
-  class { 'openstack::glance':
+  class { '::openstack::glance':
     verbose          => $verbose,
     db_type          => $db_type,
     db_host          => $db_host,
@@ -370,13 +370,13 @@ class openstack::all (
   }
 
   # Configure libvirt for nova-compute
-  class { 'nova::compute::libvirt':
+  class { '::nova::compute::libvirt':
     libvirt_type      => $libvirt_type,
     vncserver_listen  => $vncserver_listen_real,
     migration_support => $migration_support,
   }
 
-  class { 'openstack::nova::controller':
+  class { '::openstack::nova::controller':
     # Database
     db_host                 => $db_host,
     # Network
@@ -447,7 +447,7 @@ class openstack::all (
       $bridge_uplinks_real = $bridge_uplinks
     }
 
-    class { 'openstack::neutron':
+    class { '::openstack::neutron':
       debug                 => $debug,
       # Database
       db_host               => $db_host,
@@ -483,7 +483,7 @@ class openstack::all (
       enable_server         => $enable_neutron_server,
       verbose               => $verbose,
     }
-    class { 'nova::compute::neutron':
+    class { '::nova::compute::neutron':
       libvirt_vif_driver => $libvirt_vif_driver,
     }
   } else {
@@ -493,7 +493,7 @@ class openstack::all (
     }
 
     if $multi_host {
-      include keystone::python
+      include ::keystone::python
       nova_config {
         'DEFAULT/send_arp_for_ha': value => true;
       }
@@ -515,7 +515,7 @@ class openstack::all (
       fail('Must set cinder user password when setting up a cinder controller')
     }
 
-    class { 'openstack::cinder::all':
+    class { '::openstack::cinder::all':
       bind_host          => $cinder_bind_address,
       debug              => $debug,
       keystone_auth_host => $keystone_host,
@@ -547,7 +547,7 @@ class openstack::all (
 
   ######## Horizon ########
   if ($horizon) {
-    class { 'openstack::horizon':
+    class { '::openstack::horizon':
       secret_key        => $secret_key,
       cache_server_ip   => $cache_server_ip,
       cache_server_port => $cache_server_port,

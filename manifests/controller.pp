@@ -321,7 +321,7 @@ class openstack::controller (
     if ($enabled) {
       Class['glance::db::mysql'] -> Class['glance::registry']
     }
-    class { 'openstack::db::mysql':
+    class { '::openstack::db::mysql':
       mysql_root_password    => $mysql_root_password,
       mysql_bind_address     => $mysql_bind_address,
       mysql_account_security => $mysql_account_security,
@@ -354,7 +354,7 @@ class openstack::controller (
   }
 
   ####### KEYSTONE ###########
-  class { 'openstack::keystone':
+  class { '::openstack::keystone':
     debug                     => $debug,
     verbose                   => $verbose,
     db_type                   => $db_type,
@@ -403,7 +403,7 @@ class openstack::controller (
 
 
   ######## BEGIN GLANCE ##########
-  class { 'openstack::glance':
+  class { '::openstack::glance':
     debug            => $debug,
     verbose          => $verbose,
     db_type          => $db_type,
@@ -438,7 +438,7 @@ class openstack::controller (
     }
   }
 
-  class { 'openstack::nova::controller':
+  class { '::openstack::nova::controller':
     # Database
     db_host                 => $db_host,
     sql_idle_timeout        => $sql_idle_timeout,
@@ -520,7 +520,7 @@ class openstack::controller (
       $bridge_mappings_real  = $bridge_mappings
     }
 
-    class { 'openstack::neutron':
+    class { '::openstack::neutron':
       # Database
       db_host               => $db_host,
       sql_idle_timeout      => $sql_idle_timeout,
@@ -577,7 +577,7 @@ class openstack::controller (
       fail('Must set cinder user password when setting up a cinder controller')
     }
 
-    class { 'openstack::cinder::all':
+    class { '::openstack::cinder::all':
       bind_host          => $cinder_bind_address,
       sql_idle_timeout   => $sql_idle_timeout,
       keystone_auth_host => $keystone_host,
@@ -605,7 +605,7 @@ class openstack::controller (
 
   ######## Horizon ########
   if ($horizon) {
-    class { 'openstack::horizon':
+    class { '::openstack::horizon':
       secret_key        => $secret_key,
       cache_server_ip   => $cache_server_ip,
       cache_server_port => $cache_server_port,

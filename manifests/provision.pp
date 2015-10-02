@@ -215,7 +215,7 @@ class openstack::provision(
                                 Glance_image[$image_name],
                                 ], $neutron_deps)
 
-    class { 'tempest':
+    class { '::tempest':
       tempest_repo_uri          => $tempest_repo_uri,
       tempest_clone_path        => $tempest_clone_path,
       tempest_clone_owner       => $tempest_clone_owner,

@@ -296,14 +296,14 @@ class openstack::keystone (
 
   if ($enabled) {
     # Setup the admin user
-    class { 'keystone::roles::admin':
+    class { '::keystone::roles::admin':
       email        => $admin_email,
       password     => $admin_password,
       admin_tenant => $admin_tenant,
     }
 
     # Setup the Keystone Identity Endpoint
-    class { 'keystone::endpoint':
+    class { '::keystone::endpoint':
       public_address   => $public_address,
       public_protocol  => $public_protocol,
       admin_address    => $admin_real,
@@ -313,7 +313,7 @@ class openstack::keystone (
 
     # Configure Glance endpoint in Keystone
     if $glance {
-      class { 'glance::keystone::auth':
+      class { '::glance::keystone::auth':
         password         => $glance_user_password,
         public_address   => $glance_public_real,
         public_protocol  => $public_protocol,
@@ -325,7 +325,7 @@ class openstack::keystone (
 
     # Configure Nova endpoint in Keystone
     if $nova {
-      class { 'nova::keystone::auth':
+      class { '::nova::keystone::auth':
         password         => $nova_user_password,
         public_address   => $nova_public_real,
         public_protocol  => $public_protocol,
@@ -337,7 +337,7 @@ class openstack::keystone (
 
     # Configure Cinder endpoint in Keystone
     if $cinder {
-      class { 'cinder::keystone::auth':
+      class { '::cinder::keystone::auth':
         password         => $cinder_user_password,
         public_address   => $cinder_public_real,
         public_protocol  => $public_protocol,
@@ -348,7 +348,7 @@ class openstack::keystone (
     }
 
     if $neutron {
-      class { 'neutron::keystone::auth':
+      class { '::neutron::keystone::auth':
         password         => $neutron_user_password,
         public_address   => $neutron_public_real,
         public_protocol  => $public_protocol,
@@ -364,7 +364,7 @@ class openstack::keystone (
         fail('Must set a ceilometer_user_password when ceilometer auth is being configured')
       }
 
-      class { 'ceilometer::keystone::auth':
+      class { '::ceilometer::keystone::auth':
         password         => $ceilometer_user_password,
         public_address   => $ceilometer_public_real,
         public_protocol  => $public_protocol,
@@ -380,7 +380,7 @@ class openstack::keystone (
         fail('Must set a swift_user_password when swift auth is being configured')
       }
 
-      class { 'swift::keystone::auth':
+      class { '::swift::keystone::auth':
         password         => $swift_user_password,
         public_address   => $swift_public_real,
         public_protocol  => $public_protocol,
@@ -396,7 +396,7 @@ class openstack::keystone (
         fail('Must set a heat_user_password when heat auth is being configured')
       }
 
-      class { 'heat::keystone::auth':
+      class { '::heat::keystone::auth':
         password         => $heat_user_password,
         public_address   => $heat_public_real,
         public_protocol  => $public_protocol,
@@ -412,7 +412,7 @@ class openstack::keystone (
         fail('Must set a heat_cfn_user_password when heat_cfn auth is being configured')
       }
 
-      class { 'heat::keystone::auth_cfn':
+      class { '::heat::keystone::auth_cfn':
         password         => $heat_cfn_user_password,
         public_address   => $heat_cfn_public_real,
         public_protocol  => $public_protocol,

@@ -3,7 +3,7 @@ class openstack::repo::epel {
   if ($::osfamily == 'RedHat' and
       $::operatingsystem != 'Fedora' and
       $::operatingsystemrelease =~ /^6\..*$/) {
-    include openstack::repo::yum_refresh
+    include ::openstack::repo::yum_refresh
 
     yumrepo { 'epel':
       mirrorlist     => 'https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch',

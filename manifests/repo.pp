@@ -8,16 +8,16 @@ class openstack::repo(
   case $release {
     'havana', 'grizzly': {
       if $::osfamily == 'RedHat' {
-        class {'openstack::repo::rdo': release => $release }
+        class {'::openstack::repo::rdo': release => $release }
       } elsif $::operatingsystem == 'Ubuntu' {
-        class {'openstack::repo::uca': release => $release }
+        class {'::openstack::repo::uca': release => $release }
       }
     }
     'folsom': {
       if $::osfamily == 'RedHat' {
-        include openstack::repo::epel
+        include ::openstack::repo::epel
       } elsif $::operatingsystem == 'Ubuntu' {
-        class {'openstack::repo::uca': release => $release }
+        class {'::openstack::repo::uca': release => $release }
       }
     }
     default: {

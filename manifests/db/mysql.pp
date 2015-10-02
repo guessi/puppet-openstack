@@ -99,7 +99,7 @@ class openstack::db::mysql (
 ) {
 
   # Install and configure MySQL Server
-  class { 'mysql::server':
+  class { '::mysql::server':
     config_hash => {
       'root_password' => $mysql_root_password,
       'bind_address'  => $mysql_bind_address,
@@ -113,12 +113,12 @@ class openstack::db::mysql (
 
   # This removes default users and guest access
   if $mysql_account_security {
-    class { 'mysql::server::account_security': }
+    class { '::mysql::server::account_security': }
   }
 
   if ($enabled) {
     # Create the Keystone db
-    class { 'keystone::db::mysql':
+    class { '::keystone::db::mysql':
       user          => $keystone_db_user,
       password      => $keystone_db_password,
       dbname        => $keystone_db_dbname,
@@ -127,7 +127,7 @@ class openstack::db::mysql (
     }
 
     # Create the Glance db
-    class { 'glance::db::mysql':
+    class { '::glance::db::mysql':
       user          => $glance_db_user,
       password      => $glance_db_password,
       dbname        => $glance_db_dbname,
@@ -136,7 +136,7 @@ class openstack::db::mysql (
     }
 
     # Create the Nova db
-    class { 'nova::db::mysql':
+    class { '::nova::db::mysql':
       user          => $nova_db_user,
       password      => $nova_db_password,
       dbname        => $nova_db_dbname,
@@ -146,7 +146,7 @@ class openstack::db::mysql (
 
     # create cinder db
     if ($cinder) {
-      class { 'cinder::db::mysql':
+      class { '::cinder::db::mysql':
         user          => $cinder_db_user,
         password      => $cinder_db_password,
         dbname        => $cinder_db_dbname,
@@ -157,7 +157,7 @@ class openstack::db::mysql (
 
     # create neutron db
     if ($neutron) {
-      class { 'neutron::db::mysql':
+      class { '::neutron::db::mysql':
         user          => $neutron_db_user,
         password      => $neutron_db_password,
         dbname        => $neutron_db_dbname,
@@ -167,7 +167,7 @@ class openstack::db::mysql (
     }
 
     if ($ceilometer) {
-      class { 'ceilometer::db::mysql':
+      class { '::ceilometer::db::mysql':
         user          => $ceilometer_db_user,
         password      => $ceilometer_db_password,
         dbname        => $ceilometer_db_dbname,

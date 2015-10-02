@@ -5,7 +5,7 @@ class openstack::repo::uca(
 ) {
   if ($::operatingsystem == 'Ubuntu' and
       $::lsbdistdescription =~ /^.*LTS.*$/) {
-    include apt::update
+    include ::apt::update
 
     apt::source { 'ubuntu-cloud-archive':
       location          => 'http://ubuntu-cloud.archive.canonical.com/ubuntu',

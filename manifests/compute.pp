@@ -154,7 +154,7 @@ class openstack::compute (
 
   $nova_sql_connection = "mysql://${nova_db_user}:${nova_db_password}@${db_host}/${nova_db_name}"
 
-  class { 'nova':
+  class { '::nova':
     sql_connection      => $nova_sql_connection,
     rabbit_userid       => $rabbit_user,
     rabbit_password     => $rabbit_password,
@@ -180,7 +180,7 @@ class openstack::compute (
   }
 
   # Configure libvirt for nova-compute
-  class { 'nova::compute::libvirt':
+  class { '::nova::compute::libvirt':
     libvirt_type      => $libvirt_type,
     vncserver_listen  => $vncserver_listen_real,
     migration_support => $migration_support,
@@ -195,7 +195,7 @@ class openstack::compute (
     }
 
     if $multi_host {
-      include keystone::python
+      include ::keystone::python
       nova_config {
         'DEFAULT/multi_host':      value => true;
         'DEFAULT/send_arp_for_ha': value => true;
@@ -204,7 +204,7 @@ class openstack::compute (
         fail('public_interface must be defined for multi host compute nodes')
       }
       $enable_network_service = true
-      class { 'nova::api':
+      class { '::nova::api':
         enabled           => true,
         admin_tenant_name => $nova_admin_tenant_name,
         admin_user        => $nova_admin_user,
@@ -219,7 +219,7 @@ class openstack::compute (
       }
     }
 
-    class { 'nova::network':
+    class { '::nova::network':
       private_interface => $private_interface,
       public_interface  => $public_interface,
       fixed_range       => $fixed_range,
@@ -242,7 +242,7 @@ class openstack::compute (
       fail('keystone_host must be configured when neutron is installed')
     }
 
-    class { 'openstack::neutron':
+    class { '::openstack::neutron':
       ensure_neutron       => $ensure_neutron,
       # Database
       db_host              => $db_host,
@@ -284,12 +284,12 @@ class openstack::compute (
       'quotas/quota_port':       value => $quota_port;
     }
 
-    class { 'nova::compute::neutron':
+    class { '::nova::compute::neutron':
       libvirt_vif_driver => $libvirt_vif_driver,
     }
 
     # Configures nova.conf entries applicable to Neutron.
-    class { 'nova::network::neutron':
+    class { '::nova::network::neutron':
       neutron_admin_password    => $neutron_user_password,
       neutron_auth_strategy     => 'keystone',
       neutron_url               => "http://${neutron_host}:9696",
@@ -309,7 +309,7 @@ class openstack::compute (
 
     $cinder_sql_connection = "mysql://${cinder_db_user}:${cinder_db_password}@${db_host}/${cinder_db_name}"
 
-    class { 'openstack::cinder::storage':
+    class { '::openstack::cinder::storage':
       sql_connection      => $cinder_sql_connection,
       rabbit_password     => $rabbit_password,
       rabbit_userid       => $rabbit_user,

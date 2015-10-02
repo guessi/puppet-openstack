@@ -40,7 +40,7 @@ class openstack::swift::proxy (
   )
 
   if $memcached {
-    class { 'memcached':
+    class { '::memcached':
       listen_ip => $memcached_listen_ip,
     }
   }
@@ -63,7 +63,7 @@ class openstack::swift::proxy (
     '::swift::proxy::swift3',
   ]: }
 
-  class { 'swift::proxy::cache':
+  class { '::swift::proxy::cache':
     memcache_servers => $swift_memcache_servers,
   }
 
@@ -96,7 +96,7 @@ class openstack::swift::proxy (
   Ring_account_device <<| |>>
 
   # create the ring
-  class { 'swift::ringbuilder':
+  class { '::swift::ringbuilder':
     # the part power should be determined by assuming 100 partitions per drive
     part_power     => $ring_part_power,
     replicas       => $ring_replicas,
@@ -105,12 +105,12 @@ class openstack::swift::proxy (
   }
 
   # sets up an rsync db that can be used to sync the ring DB
-  class { 'swift::ringserver':
+  class { '::swift::ringserver':
     local_net_ip => $swift_local_net_ip,
   }
 
   # deploy a script that can be used for testing
-  class {'swift::test_file':
+  class {'::swift::test_file':
     auth_server  => $real_keystone_host,
     tenant       => $swift_admin_tenant,
     user         => $swift_admin_user,

@@ -82,7 +82,7 @@ class openstack::horizon (
       warning('The cache_server_ip parameter is deprecated. Use memcached_listen_ip instead.')
       $cache_server_ip_real = $cache_server_ip
     }
-    class { 'memcached':
+    class { '::memcached':
       listen_ip => $cache_server_ip_real,
       tcp_port  => $cache_server_port,
       udp_port  => $cache_server_port,

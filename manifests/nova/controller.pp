@@ -147,7 +147,7 @@ class openstack::nova::controller (
   $rabbit_connection = $internal_address
 
   # Install / configure rabbitmq
-  class { 'nova::rabbitmq':
+  class { '::nova::rabbitmq':
     userid                 => $rabbit_user,
     password               => $rabbit_password,
     enabled                => $enabled,
@@ -156,7 +156,7 @@ class openstack::nova::controller (
   }
 
   # Configure Nova
-  class { 'nova':
+  class { '::nova':
     sql_connection       => $sql_connection,
     sql_idle_timeout     => $sql_idle_timeout,
     rabbit_userid        => $rabbit_user,
@@ -174,7 +174,7 @@ class openstack::nova::controller (
   }
 
   # Configure nova-api
-  class { 'nova::api':
+  class { '::nova::api':
     enabled                              => $enabled,
     admin_tenant_name                    => $nova_admin_tenant_name,
     admin_user                           => $nova_admin_user,
@@ -213,7 +213,7 @@ class openstack::nova::controller (
       fail('public interface must be set when nova networking is used')
     }
 
-    class { 'nova::network':
+    class { '::nova::network':
       private_interface => $private_interface,
       public_interface  => $public_interface,
       fixed_range       => $fixed_range,
@@ -232,7 +232,7 @@ class openstack::nova::controller (
       fail('neutron_user_password must be specified when neutron is configured')
     }
 
-    class { 'nova::network::neutron':
+    class { '::nova::network::neutron':
       neutron_admin_password    => $neutron_user_password,
       neutron_auth_strategy     => 'keystone',
       neutron_url               => "http://${keystone_host}:9696",
@@ -249,17 +249,17 @@ class openstack::nova::controller (
 
   # a bunch of nova services that require no configuration
   class { [
-    'nova::scheduler',
-    'nova::objectstore',
-    'nova::cert',
-    'nova::consoleauth',
-    'nova::conductor'
+    '::nova::scheduler',
+    '::nova::objectstore',
+    '::nova::cert',
+    '::nova::consoleauth',
+    '::nova::conductor'
   ]:
     enabled => $enabled,
   }
 
   if $vnc_enabled {
-    class { 'nova::vncproxy':
+    class { '::nova::vncproxy':
       host    => $vncproxy_host_real,
       enabled => $enabled,
     }

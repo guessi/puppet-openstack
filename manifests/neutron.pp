@@ -241,12 +241,12 @@ class openstack::neutron (
     } else {
       fail("Unsupported db type: ${db_type}. Only mysql is currently supported.")
     }
-    class { 'neutron::server':
+    class { '::neutron::server':
       package_ensure => $ensure_neutron,
       auth_host      => $keystone_host,
       auth_password  => $user_password,
     }
-    class { 'neutron::plugins::ovs':
+    class { '::neutron::plugins::ovs':
       package_ensure      => $ensure_neutron,
       sql_connection      => $sql_connection,
       sql_idle_timeout    => $sql_idle_timeout,
@@ -256,7 +256,7 @@ class openstack::neutron (
   }
 
   if $enable_ovs_agent {
-    class { 'neutron::agents::ovs':
+    class { '::neutron::agents::ovs':
       package_ensure   => $ensure_neutron,
       bridge_uplinks   => $bridge_uplinks,
       bridge_mappings  => $bridge_mappings,
@@ -267,14 +267,14 @@ class openstack::neutron (
   }
 
   if $enable_dhcp_agent {
-    class { 'neutron::agents::dhcp':
+    class { '::neutron::agents::dhcp':
       package_ensure => $ensure_neutron,
       use_namespaces => true,
       debug          => $debug,
     }
   }
   if $enable_l3_agent {
-    class { 'neutron::agents::l3':
+    class { '::neutron::agents::l3':
       package_ensure => $ensure_neutron,
       use_namespaces => true,
       debug          => $debug,
@@ -285,7 +285,7 @@ class openstack::neutron (
     if ! $shared_secret {
       fail('metadata_shared_secret parameter must be set when using metadata agent')
     }
-    class { 'neutron::agents::metadata':
+    class { '::neutron::agents::metadata':
       package_ensure => $ensure_neutron,
       auth_password  => $user_password,
       shared_secret  => $shared_secret,

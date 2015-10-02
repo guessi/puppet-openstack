@@ -44,7 +44,7 @@ class openstack::cinder::storage(
   case $volume_driver {
 
     'iscsi': {
-      class { 'cinder::volume::iscsi':
+      class { '::cinder::volume::iscsi':
         iscsi_ip_address => $iscsi_ip_address,
         volume_group     => $volume_group,
       }
@@ -56,7 +56,7 @@ class openstack::cinder::storage(
     }
     'rbd': {
 
-      class { 'cinder::volume::rbd':
+      class { '::cinder::volume::rbd':
         rbd_user        => $rbd_user,
         rbd_pool        => $rbd_pool,
         rbd_secret_uuid => $rbd_secret_uuid,

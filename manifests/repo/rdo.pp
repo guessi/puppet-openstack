@@ -2,7 +2,7 @@
 class openstack::repo::rdo(
   $release = 'grizzly'
 ) {
-  include openstack::repo::epel
+  include ::openstack::repo::epel
 
   $release_cap = capitalize($release)
 
