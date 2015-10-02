@@ -66,6 +66,7 @@ class openstack::compute (
   $bridge_uplinks                = undef,
   $security_group_api            = 'neutron',
   # Nova
+  $ensure_nova                   = 'present',
   $nova_admin_tenant_name        = 'services',
   $nova_admin_user               = 'nova',
   $purge_nova_config             = false,
@@ -143,6 +144,7 @@ class openstack::compute (
 
   # Install / configure nova-compute
   class { '::nova::compute':
+    ensure_package                => $ensure_nova,
     enabled                       => $enabled,
     vnc_enabled                   => $vnc_enabled,
     vncserver_proxyclient_address => $internal_address,
