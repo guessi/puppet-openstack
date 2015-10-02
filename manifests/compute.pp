@@ -101,6 +101,7 @@ class openstack::compute (
   $cinder_rbd_secret_uuid        = false,
   # General
   $migration_support             = false,
+  $live_migration_flag           = undef,
   $debug                         = false,
   $use_syslog                    = false,
   $verbose                       = false,
@@ -303,5 +304,23 @@ class openstack::compute (
 
   class { '::keystone::client':
     ensure                => $ensure_keystoneclient,
+  }
+
+  if $migration_support {
+    if ! $live_migration_flag {
+      fail('live_migration_flag must be set when migration_support is true')
+    }
+
+    nova_config { 'DEFAULT/live_migration_flag':
+      value => join($live_migration_flag, ',')
+    }
+
+    file_line { '/etc/init/libvirt-bin.conf libvirtd_opts':
+      path    => '/etc/init/libvirt-bin.conf',
+      line    => 'env libvirtd_opts="-d -l"',
+      match   => 'libvirtd_opts=',
+      require => Package['libvirt-bin'],
+      notify  => Service['libvirt-bin'],
+    }
   }
 }
