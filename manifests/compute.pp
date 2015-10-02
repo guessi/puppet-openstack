@@ -108,6 +108,10 @@ class openstack::compute (
   $enabled                       = true
 ) {
 
+  nova_config {
+    'DEFAULT/novnc_enabled': value => $vnc_enabled;
+  }
+
   if $ovs_local_ip {
     $ovs_local_ip_real = $ovs_local_ip
   } else {
