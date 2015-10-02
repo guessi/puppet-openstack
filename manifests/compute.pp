@@ -53,6 +53,9 @@ class openstack::compute (
   $neutron_user_password         = false,
   $neutron_admin_tenant_name     = 'services',
   $neutron_admin_user            = 'neutron',
+  $neutron_db_user               = 'neutron',
+  $neutron_db_password           = 'neutronPass',
+  $neutron_db_name               = 'neutron',
   $enable_ovs_agent              = true,
   $enable_l3_agent               = false,
   $enable_dhcp_agent             = false,
@@ -244,6 +247,10 @@ class openstack::compute (
       user_password        => $neutron_user_password,
       # Keystone
       keystone_host        => $keystone_host,
+      # Database
+      db_name              => $neutron_db_name,
+      db_user              => $neutron_db_user,
+      db_password          => $neutron_db_password,
       # General
       debug                => $debug,
       enabled              => $enabled,
