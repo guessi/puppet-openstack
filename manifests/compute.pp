@@ -108,6 +108,17 @@ class openstack::compute (
   $cinder_rbd_user               = 'volumes',
   $cinder_rbd_pool               = 'volumes',
   $cinder_rbd_secret_uuid        = false,
+  # Misc
+  $allow_resize_to_same_host     = false,
+  $default_availability_zone     = 'nova',
+  $enable_instance_password      = true,
+  $linuxnet_interface_driver     = 'nova.network.linux_net.LinuxOVSInterfaceDriver',
+  $neutron_metadata_proxy        = true,
+  $num_iscsi_scan_tries          = '6',
+  $resume_state_on_boot          = true,
+  $shared_secret                 = undef,
+  $scheduler_default_filters     = undef,
+  $use_deprecated_auth           = false,
   # General
   $migration_support             = false,
   $live_migration_flag           = undef,
@@ -328,6 +339,26 @@ class openstack::compute (
 
   class { '::keystone::client':
     ensure                => $ensure_keystoneclient,
+  }
+
+  if ! $scheduler_default_filters {
+    fail('scheduler_default_filters must be set when neutron is configured')
+  }
+
+  nova_config {
+    'DEFAULT/allow_resize_to_same_host':            value => $allow_resize_to_same_host;
+    'DEFAULT/default_availability_zone':            value => $default_availability_zone;
+    'DEFAULT/enable_instance_password':             value => $enable_instance_password;
+    'DEFAULT/enabled_apis':                         value => $enabled_apis;
+    'DEFAULT/linuxnet_interface_driver':            value => $linuxnet_interface_driver;
+    'DEFAULT/my_ip':                                value => $internal_address;
+    'DEFAULT/neutron_metadata_proxy_shared_secret': value => $shared_secret;
+    'DEFAULT/nova_url':                             value => "http://${controller_host}:8774/v1.1/";
+    'DEFAULT/num_iscsi_scan_tries':                 value => $num_iscsi_scan_tries;
+    'DEFAULT/resume_guests_state_on_host_boot':     value => $resume_state_on_boot;
+    'DEFAULT/scheduler_default_filters':            value => join($scheduler_default_filters, ',');
+    'DEFAULT/service_neutron_metadata_proxy':       value => $neutron_metadata_proxy;
+    'DEFAULT/use_deprecated_auth':                  value => $use_deprecated_auth;
   }
 
   Package<| title == 'nova-common' |> -> Nova_paste_api_ini<| |>
