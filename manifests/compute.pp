@@ -85,6 +85,7 @@ class openstack::compute (
   # VNC
   $vnc_enabled                   = true,
   $vncproxy_host                 = undef,
+  $vncproxy_protocol             = 'https',
   $vncserver_listen              = false,
   # cinder / volumes
   $manage_volumes                = true,
@@ -155,6 +156,7 @@ class openstack::compute (
     vnc_enabled                   => $vnc_enabled,
     vncserver_proxyclient_address => $internal_address,
     vncproxy_host                 => $vncproxy_host,
+    vncproxy_protocol             => $vncproxy_protocol,
     force_config_drive            => $force_config_drive,
   }
 
