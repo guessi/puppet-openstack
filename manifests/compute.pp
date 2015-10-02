@@ -71,6 +71,8 @@ class openstack::compute (
   $nova_admin_user               = 'nova',
   $purge_nova_config             = false,
   $libvirt_vif_driver            = 'nova.virt.libvirt.vif.LibvirtGenericVIFDriver',
+  # Keystone Client
+  $ensure_keystoneclient         = 'present',
   # Rabbit
   $rabbit_host                   = '127.0.0.1',
   $rabbit_hosts                  = false,
@@ -291,4 +293,7 @@ class openstack::compute (
     }
   }
 
+  class { '::keystone::client':
+    ensure                => $ensure_keystoneclient,
+  }
 }
