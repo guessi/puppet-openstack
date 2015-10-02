@@ -100,6 +100,8 @@ class openstack::compute (
   $cinder_rbd_secret_uuid        = false,
   # General
   $migration_support             = false,
+  $debug                         = false,
+  $use_syslog                    = false,
   $verbose                       = false,
   $force_config_drive            = false,
   $enabled                       = true
@@ -138,6 +140,8 @@ class openstack::compute (
     rabbit_password     => $rabbit_password,
     image_service       => 'nova.image.glance.GlanceImageService',
     glance_api_servers  => $glance_api_servers,
+    debug               => $debug,
+    use_syslog          => $use_syslog,
     verbose             => $verbose,
     rabbit_host         => $rabbit_host,
     rabbit_hosts        => $rabbit_hosts,
@@ -237,6 +241,7 @@ class openstack::compute (
       # Keystone
       keystone_host        => $keystone_host,
       # General
+      debug                => $debug,
       enabled              => $enabled,
       enable_server        => false,
       verbose              => $verbose,
