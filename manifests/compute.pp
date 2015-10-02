@@ -302,11 +302,15 @@ class openstack::compute (
       rbd_secret_uuid     => $cinder_rbd_secret_uuid,
       volume_driver       => $cinder_volume_driver,
     }
+  }
 
-    # set in nova::api
-    if ! defined(Nova_config['DEFAULT/volume_api_class']) {
-      nova_config { 'DEFAULT/volume_api_class': value => 'nova.volume.cinder.API' }
-    }
+  # Cinder
+  if ! defined(Nova_config['DEFAULT/cinder_catalog_info']) {
+    nova_config { 'DEFAULT/cinder_catalog_info': value => 'volume:cinder:internalURL' }
+  }
+
+  if ! defined(Nova_config['DEFAULT/volume_api_class']) {
+    nova_config { 'DEFAULT/volume_api_class': value => 'nova.volume.cinder.API' }
   }
 
   class { '::keystone::client':
