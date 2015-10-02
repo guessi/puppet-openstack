@@ -204,6 +204,8 @@ class openstack::neutron (
   $sql_idle_timeout       = '3600',
   # Plugin
   $core_plugin            = undef,
+  # misc
+  $ensure_neutron         = 'present',
   # General
   $bind_address           = '0.0.0.0',
   $keystone_host          = '127.0.0.1',
@@ -214,6 +216,7 @@ class openstack::neutron (
 ) {
 
   class { '::neutron':
+    package_ensure        => $ensure_neutron,
     enabled               => $enabled,
     core_plugin           => $core_plugin,
     bind_host             => $bind_address,
@@ -239,10 +242,12 @@ class openstack::neutron (
       fail("Unsupported db type: ${db_type}. Only mysql is currently supported.")
     }
     class { 'neutron::server':
-      auth_host     => $keystone_host,
-      auth_password => $user_password,
+      package_ensure => $ensure_neutron,
+      auth_host      => $keystone_host,
+      auth_password  => $user_password,
     }
     class { 'neutron::plugins::ovs':
+      package_ensure      => $ensure_neutron,
       sql_connection      => $sql_connection,
       sql_idle_timeout    => $sql_idle_timeout,
       tenant_network_type => $tenant_network_type,
@@ -252,6 +257,7 @@ class openstack::neutron (
 
   if $enable_ovs_agent {
     class { 'neutron::agents::ovs':
+      package_ensure   => $ensure_neutron,
       bridge_uplinks   => $bridge_uplinks,
       bridge_mappings  => $bridge_mappings,
       enable_tunneling => $ovs_enable_tunneling,
@@ -262,12 +268,14 @@ class openstack::neutron (
 
   if $enable_dhcp_agent {
     class { 'neutron::agents::dhcp':
+      package_ensure => $ensure_neutron,
       use_namespaces => true,
       debug          => $debug,
     }
   }
   if $enable_l3_agent {
     class { 'neutron::agents::l3':
+      package_ensure => $ensure_neutron,
       use_namespaces => true,
       debug          => $debug,
     }
@@ -278,6 +286,7 @@ class openstack::neutron (
       fail('metadata_shared_secret parameter must be set when using metadata agent')
     }
     class { 'neutron::agents::metadata':
+      package_ensure => $ensure_neutron,
       auth_password  => $user_password,
       shared_secret  => $shared_secret,
       auth_url       => $auth_url,

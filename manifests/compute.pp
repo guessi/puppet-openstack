@@ -48,6 +48,7 @@ class openstack::compute (
   $multi_host                    = false,
   $enabled_apis                  = 'ec2,osapi_compute,metadata',
   # Neutron
+  $ensure_neutron                = 'present',
   $neutron                       = true,
   $neutron_user_password         = false,
   $neutron_admin_tenant_name     = 'services',
@@ -210,6 +211,7 @@ class openstack::compute (
     }
 
     class { 'openstack::neutron':
+      ensure_neutron       => $ensure_neutron,
       # Database
       db_host              => $db_host,
       # Networking
