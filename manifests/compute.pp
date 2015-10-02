@@ -68,6 +68,10 @@ class openstack::compute (
   $bridge_mappings               = undef,
   $bridge_uplinks                = undef,
   $security_group_api            = 'neutron',
+  $agent_down_time               = '60',
+  $report_interval               = '30',
+  $report_interval_agent         = '30',
+  $quota_port                    = '-1',
   # Nova
   $ensure_nova                   = 'present',
   $nova_admin_tenant_name        = 'services',
@@ -260,6 +264,13 @@ class openstack::compute (
       verbose              => $verbose,
       bridge_mappings      => $bridge_mappings,
       bridge_uplinks       => $bridge_uplinks
+    }
+
+    neutron_config {
+      'DEFAULT/agent_down_time': value => $agent_down_time;
+      'DEFAULT/report_interval': value => $report_interval;
+      'agent/report_interval':   value => $report_interval_agent;
+      'quotas/quota_port':       value => $quota_port;
     }
 
     class { 'nova::compute::neutron':
