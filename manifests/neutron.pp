@@ -215,6 +215,11 @@ class openstack::neutron (
   $debug                  = false,
 ) {
 
+  if (($ovs_enable_tunneling == true) and
+    ($tenant_network_type == 'gre')) {
+    ::kmod::load { 'nf_conntrack_proto_gre': }
+  }
+
   class { '::neutron':
     package_ensure        => $ensure_neutron,
     enabled               => $enabled,
