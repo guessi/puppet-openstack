@@ -1,6 +1,6 @@
 {
   "name": "puppetlabs-openstack",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "Puppet Labs and Community Contributors",
   "summary": "Puppet Labs Openstack Module targeted for Havana.",
   "license": "Apache License, Version 2.0",
